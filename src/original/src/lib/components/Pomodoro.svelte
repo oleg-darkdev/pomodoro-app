@@ -1,20 +1,18 @@
 <script>
-	import { onDestroy } from 'svelte';
-	import { showNotification, playSound } from '../utils/notifications.js';
-	import { currentView } from '../stores/settings';
-	import Button from '../Button.svelte';
-	import { browser } from '$app/environment';
+	import { onDestroy } from "svelte";
+	import { showNotification, playSound } from "../utils/notifications.js";
+	import { currentView } from "../stores/settings";
+	import Button from "../Button.svelte";
 
-
-	import Timer from 'tiny-timer';
+	import Timer from "tiny-timer";
 	import {
 		timers,
 		newEntry,
 		pomodoroState,
 		runningTimerId,
 		pomodoroPaused,
-		stopwatchState
-	} from '../stores/timers.js';
+		stopwatchState,
+	} from "../stores/timers.js";
 
 	const timer = new Timer();
 
@@ -22,22 +20,22 @@
 	let paused = false;
 	let waiting = false;
 	let done = false;
-	let buttonText = 'Start';
+	let buttonText = "Start";
 
 	$: $pomodoroPaused = paused;
 
 	let currentIndex = 0;
 
-	let currentTimerCount = '00:00';
+	let currentTimerCount = "00:00";
 
 	onDestroy(() => {
 		stopTimer();
 	});
 
 	const startTimer = () => {
-		if (timer.status === 'running') {
+		if (timer.status === "running") {
 			timer.pause();
-		} else if (timer.status === 'paused') {
+		} else if (timer.status === "paused") {
 			waiting = false;
 			timer.resume();
 		} else {
@@ -46,7 +44,7 @@
 
 		if (waiting) {
 			timer.pause();
-			buttonText = 'Continue';
+			buttonText = "Continue";
 		}
 
 		done = false;
@@ -59,13 +57,13 @@
 		waiting = false;
 		done = false;
 		currentIndex = 0;
-		currentTimerCount = '00:00';
+		currentTimerCount = "00:00";
 		timer.stop();
 		$pomodoroState = false;
 		$runningTimerId = 0;
 	};
 
-	timer.on('tick', (ms) => {
+	timer.on("tick", (ms) => {
 		currentTimerCount = timeAdapter(ms);
 	});
 
@@ -73,43 +71,50 @@
 		let minutes = Math.floor(ms / 60000);
 		let seconds = ((ms % 60000) / 1000).toFixed(0);
 		return parseInt(seconds) === 60
-			? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
-			: (minutes < 10 ? '0' : '') + minutes + ':' + (parseInt(seconds) < 10 ? '0' : '') + seconds;
+			? (minutes + 1 < 10 ? "0" + (minutes + 1) : "" + (minutes + 1)) + ":00"
+			: (minutes < 10 ? "0" : "") +
+					minutes +
+					":" +
+					(parseInt(seconds) < 10 ? "0" : "") +
+					seconds;
 	}
 
-	timer.on('statusChanged', (status) => {
-		if (status === 'stopped') {
-			buttonText = 'Start';
+	timer.on("statusChanged", (status) => {
+		if (status === "stopped") {
+			buttonText = "Start";
 			paused = false;
 			stopped = true;
-		} else if (status === 'running') {
-			buttonText = 'Pause';
+		} else if (status === "running") {
+			buttonText = "Pause";
 			paused = false;
 			stopped = false;
 		} else {
-			buttonText = 'Resume';
+			buttonText = "Resume";
 			paused = true;
 			stopped = false;
 		}
 	});
 
-	timer.on('done', () => {
+	timer.on("done", () => {
 		let currentName = $timers[currentIndex].name;
-		playSound('done');
+		playSound("done");
 
 		$timers[currentIndex].completed = true;
 
 		currentIndex = currentIndex + 1;
 
 		if (currentIndex < $timers.length) {
-			if (browser ? !JSON.parse(localStorage.getItem('waitForStart')) : '') {
-				showNotification("'" + currentName + "' completed!", 'Your next timer has started now.');
+			if (!JSON.parse(localStorage.getItem("waitForStart"))) {
+				showNotification(
+					"'" + currentName + "' completed!",
+					"Your next timer has started now."
+				);
 			} else {
 				waiting = true;
 
 				showNotification(
 					"'" + currentName + "' completed!",
-					'Check the app to start the next timer.'
+					"Check the app to start the next timer."
 				);
 			}
 			startTimer();
@@ -118,15 +123,11 @@
 			done = true;
 			showNotification(
 				"'" + currentName + "' completed!",
-				'You have completed all of your timers.'
+				"You have completed all of your timers."
 			);
 		}
 	});
-
-
 </script>
-
-
 
 <h1 class:blink={paused} class="timer-number">{currentTimerCount}</h1>
 
@@ -136,7 +137,7 @@
 			buttonTitle={buttonText + " timer"}
 			withIcon
 			buttonFunction={startTimer}
-			disable={timers.length === 0 || done}
+			disable={$timers.length === 0 || done}
 		>
 			<span slot="icon">
 				{#if stopped || paused}

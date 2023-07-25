@@ -1,22 +1,21 @@
 <script>
-	import { crossfade, slide } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
-	import { flip } from 'svelte/animate';
+	import { crossfade, slide } from "svelte/transition";
+	import { quintOut } from "svelte/easing";
+	import { flip } from "svelte/animate";
 
 	const [send, receive] = crossfade({});
 
-	import { timers, laps, draggingItem } from '../stores/timers.js';
+	import { timers, laps, draggingItem } from "../stores/timers.js";
 
-	import Timer from './Timer.svelte';
-	import Lap from './Lap.svelte';
-	import Button from '../Button.svelte';
+	import Timer from "./Timer.svelte";
+	import Lap from "./Lap.svelte";
+	import Button from "../Button.svelte";
 
 	export let pomodoroList;
 
 	$: items = $timers;
 
-	$: timeMap = $timers?.map((index) => index.time);
-
+	$: timeMap = $timers.map((index) => index.time);
 	$: getTime(timeMap);
 	let totalHours;
 	let totalMinutes;
@@ -42,7 +41,7 @@
 
 	const start = (ev, timerId) => {
 		draggingOverIndex = null;
-		ev.dataTransfer.setData('source', ev.target.dataset.index);
+		ev.dataTransfer.setData("source", ev.target.dataset.index);
 
 		draggingIndex = items.findIndex((state) => state.id === timerId);
 
@@ -103,7 +102,9 @@
 			{#each items as timer, index (timer.id)}
 				<div
 					class:dragging={dragging && draggingIndex === index}
-					class:hovering={dragging && draggingIndex !== index && draggingOverIndex === index}
+					class:hovering={dragging &&
+						draggingIndex !== index &&
+						draggingOverIndex === index}
 					class="list-item"
 					data-index={index}
 					on:drop={(ev) => {
@@ -118,7 +119,7 @@
 					in:receive|local={{ key: index }}
 					out:send|local={{ key: index }}
 					animate:flip={{
-						duration: (d) => Math.sqrt(d * 360)
+						duration: (d) => Math.sqrt(d * 360),
 					}}
 				>
 					<Timer {...timer} {start} {end} />
@@ -173,7 +174,7 @@
 	}
 
 	.hovering::before {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -193,7 +194,7 @@
 	.time {
 		padding: 2px 3px 0 3px;
 		display: inline;
-		font-family: 'Monument Extended';
+		font-family: "Monument Extended";
 		font-size: 0.8rem;
 	}
 </style>

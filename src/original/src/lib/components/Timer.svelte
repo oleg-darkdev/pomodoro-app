@@ -16,7 +16,7 @@
 	export let completed;
 
 	let newName = name;
-	let newTime = time < 10 ? ["0" + time] : [time];
+	let newTime = time < 10 ? "0" + time : time;
 
 	$: if ($pomodoroState === false) {
 		completed = false;
@@ -43,8 +43,6 @@
 			newName = name;
 		}
 
-
-    // example update timers
 		const entry = {
 			id: id,
 			name: newName,
@@ -309,61 +307,6 @@
 
 		.right-side {
 			column-gap: 6px;
-		}
-	}
-
-
-
-	/* Chrome, Safari, Edge, Opera */
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		margin: 0;
-	}
-
-	/* Firefox */
-	input[type='number'] {
-		-moz-appearance: textfield;
-	}
-
-	input {
-		color: var(--text-color);
-		background-color: #1d1d1d;
-		padding: 0;
-		text-decoration: none;
-		border-radius: 2px;
-		border: 2px solid transparent;
-		transition: 100ms;
-		height: 42px;
-	}
-
-	input[type='text'] {
-		padding: 0.6rem 0.4rem;
-		border-radius: 2px;
-	}
-
-	input[type='number'] {
-		font-family: 'Monument Extended';
-		text-align: right;
-		font-size: inherit;
-	}
-
-	input:focus {
-		border: 2px solid var(--accent-color);
-		-webkit-appearance: none;
-	}
-
-	input:read-only {
-		color: inherit;
-		background-color: transparent;
-		border: 0;
-	}
-
-	@media (prefers-color-scheme: light) {
-		input {
-			background-color: #c5c5c5;
 		}
 	}
 </style>

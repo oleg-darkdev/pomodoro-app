@@ -1,7 +1,16 @@
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
 
-export const theme = writable(localStorage.getItem("theme") || "#CB2A37");
+let theme = writable('#CB2A37'),
+	currentView = writable('pomo'),
+	hideHour = writable(false);
 
-export const currentView = writable(localStorage.getItem("view") || "pomo");
+if (browser) {
+	theme = writable(localStorage.getItem('theme'));
 
-export const hideHour = writable(JSON.parse(localStorage.getItem("hideHour")) || false);
+	currentView = writable(localStorage.getItem('view'));
+
+	hideHour = writable(JSON.parse(localStorage.getItem('hideHour')) || false);
+}
+
+export { theme, currentView, hideHour };

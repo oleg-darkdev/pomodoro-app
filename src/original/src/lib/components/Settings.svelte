@@ -27,27 +27,27 @@
   };
 
   $: currentTheme = $theme;
-  // $: separatorColor = colorLuminance(currentTheme);
+  $: separatorColor = colorLuminance(currentTheme);
 
-  // const colorLuminance = (hex) => {
-  //   // validate hex string
-  //   hex = String(hex).replace(/[^0-9a-f]/gi, "");
-  //   if (hex.length < 6) {
-  //     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-  //   }
+  const colorLuminance = (hex) => {
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, "");
+    if (hex.length < 6) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
 
-  //   // convert to decimal and change luminosity
-  //   var rgb = "#",
-  //     c,
-  //     i;
-  //   for (i = 0; i < 3; i++) {
-  //     c = parseInt(hex.substr(i * 2, 2), 16);
-  //     c = Math.round(Math.min(Math.max(0, c + c * -0.2), 255)).toString(16);
-  //     rgb += ("00" + c).substr(c.length);
-  //   }
+    // convert to decimal and change luminosity
+    var rgb = "#",
+      c,
+      i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i * 2, 2), 16);
+      c = Math.round(Math.min(Math.max(0, c + c * -0.2), 255)).toString(16);
+      rgb += ("00" + c).substr(c.length);
+    }
 
-  //   return rgb;
-  // };
+    return rgb;
+  };
 
   const changeTheme = (color) => {
     localStorage.setItem("theme", color);
@@ -87,14 +87,12 @@
 
 <div
   class="settings-column"
-  style=""
-
+  style="--custom-separator-color: {separatorColor};"
 >
-<!-- --custom-separator-color: {separatorColor}; -->
   <div class="settings-container">
     <h1>Settings</h1>
 
-    <!-- <div class="setting">
+    <div class="setting">
       <h2>Theme:</h2>
 
       <div class="theme-options">
@@ -108,7 +106,7 @@
           >
         {/each}
       </div>
-    </div> -->
+    </div>
   </div>
 
   {#if "Notification" in window}
