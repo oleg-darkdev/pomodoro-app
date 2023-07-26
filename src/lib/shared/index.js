@@ -8,6 +8,7 @@ import defaultPomodoros from './data/defaultPomodoros';
 // utils
 import showNotification from './utils/showNotification';
 import playSound from './utils/playSound';
+import minutsAndSecondsToSecondsConverter from './utils/minutsAndSecondsToSecondsConverter';
 
 // stores
 import draggingItem from './data/stores/draggingItem';
@@ -23,7 +24,8 @@ import timers from './data/stores/timers';
 
 export {
 	SummaryTime,
-	defaultPomodoros,
+  defaultPomodoros,
+  minutsAndSecondsToSecondsConverter,
 	Switch,
 	Button,
 	showNotification,
