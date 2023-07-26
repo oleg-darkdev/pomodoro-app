@@ -1,5 +1,5 @@
 <script>
-  export let totalHours, totalMinutes;
+	export let totalHours, totalMinutes;
 </script>
 
 {#if totalHours !== 0}

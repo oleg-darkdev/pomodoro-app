@@ -1,21 +1,34 @@
 <script>
 	import { slide } from 'svelte/transition';
 	import { TimePoint } from '../../entities';
-	import { SummaryTime, getTimeFromTimer } from '../../shared';
+	import { SummaryTime } from '../../shared';
 	import { timers, laps, draggingItem } from '../../shared';
 	import { Timer, Lap } from '../../entities';
-
-	import Button from '../../shared/ui/Button.svelte';
-
-	export let pomodoroList;
 
 	$: items = $timers;
 	$: timeMap = $timers?.map((index) => index.time);
 
-	$: getTimeFromTimer(timeMap, totalHours, totalMinutes);
-	let totalHours,
-		totalMinutes,
-		dragging = false,
+	let totalHours, totalMinutes;
+
+	function getTime(result) {
+		result = result.reduce((a, b) => a + b, 0);
+
+		if (result <= 60) {
+			totalHours = 0;
+			totalMinutes = result;
+		} else if (result > 60) {
+			let hours = result / 60;
+			let rhours = Math.floor(hours);
+			let minutes = (hours - rhours) * 60;
+			let rminutes = Math.round(minutes);
+			totalHours = rhours;
+			totalMinutes = rminutes;
+		}
+	}
+
+	$: getTime(timeMap);
+
+	let dragging = false,
 		draggingIndex,
 		draggingOverIndex;
 
@@ -35,7 +48,7 @@
 		draggingIndex = null;
 	};
 
-
+	export let pomodoroList;
 </script>
 
 {#if pomodoroList}
@@ -48,7 +61,7 @@
 					style="display: flex;
 				align-items: center;"
 				>
-					<SummaryTime {totalHours} {totalMinutes} />
+					<SummaryTime bind:totalHours bind:totalMinutes />
 				</p>
 			</div>
 

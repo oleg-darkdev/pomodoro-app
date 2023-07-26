@@ -5,13 +5,9 @@ import Switch from './ui/Toggle.svelte';
 // data
 import defaultPomodoros from './data/defaultPomodoros';
 
-
-
 // utils
-import getTimeFromTimer from './utils/getTimeFromTimer';
 import showNotification from './utils/showNotification';
 import playSound from './utils/playSound';
-
 
 // stores
 import draggingItem from './data/stores/draggingItem';
@@ -25,12 +21,8 @@ import newEntry from './data/stores/newEntry';
 import laps from './data/stores/laps';
 import timers from './data/stores/timers';
 
-
-
-
 export {
 	SummaryTime,
-	getTimeFromTimer,
 	defaultPomodoros,
 	Switch,
 	Button,
@@ -39,8 +31,8 @@ export {
 	pomodoroState,
 	stopwatchPaused,
 	resetTimers,
-  newEntry,
-  timers,
+	newEntry,
+	timers,
 	runningTimerId,
 	stopwatchState,
 	pomodoroPaused,
