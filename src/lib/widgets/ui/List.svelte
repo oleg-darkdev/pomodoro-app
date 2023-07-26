@@ -1,9 +1,8 @@
 <script>
 	import { slide } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 	import { TimePoint } from '../../entities';
 	import { SummaryTime, getTimeFromTimer } from '../../shared';
-	import { timers, laps, draggingItem } from '../../stores/timers';
+	import { timers, laps, draggingItem } from '../../shared';
 	import { Timer, Lap } from '../../entities';
 
 	import Button from '../../shared/ui/Button.svelte';
@@ -35,6 +34,8 @@
 		draggingItem.set();
 		draggingIndex = null;
 	};
+
+
 </script>
 
 {#if pomodoroList}

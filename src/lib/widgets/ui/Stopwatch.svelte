@@ -2,7 +2,7 @@
 	import Timer from 'tiny-timer';
 	import { stopwatchState, laps, pomodoroState, stopwatchPaused } from '../../shared';
 	import { hideHour, currentView } from '../../stores/settings.js';
-	import { showNotification, playSound } from '../../shared/index.js';
+	import { showNotification, playSound } from '../../shared/';
 	import { Button } from '../../shared/';
 
 	const timer = new Timer({ stopwatch: true });
@@ -116,6 +116,8 @@
 		currentLapCount = defaultTime;
 
 		$laps = [lap].concat($laps);
+
+  
 	};
 </script>
 

@@ -1,14 +1,9 @@
 <script>
-	import { fly, slide } from "svelte/transition";
+	import { fly } from 'svelte/transition';
 
-	import {
-		timers,
-		pomodoroState,
-		runningTimerId,
-		pomodoroPaused,
-	} from "../../shared/";
+	import { timers, pomodoroState, runningTimerId, pomodoroPaused } from '../../shared/';
 
-	import Button from "../../shared/ui/Button.svelte";
+	import Button from '../../shared/ui/Button.svelte';
 
 	export let id;
 	export let name;
@@ -16,7 +11,7 @@
 	export let completed;
 
 	let newName = name;
-	let newTime = time < 10 ? ["0" + time] : [time];
+	let newTime = time < 10 ? ['0' + time] : [time];
 
 	$: if ($pomodoroState === false) {
 		completed = false;
@@ -24,6 +19,8 @@
 	}
 
 	const deleteTimer = () => {
+		console.log('click');
+
 		timers.delete(id);
 	};
 
@@ -43,19 +40,18 @@
 			newName = name;
 		}
 
-
-    // example update timers
+		// example update timers
 		const entry = {
 			id: id,
 			name: newName,
 			time: parseInt(newTime),
-			completed: completed,
+			completed: completed
 		};
 
 		timers.modify(entry);
 
 		if (newTime.toString().length < 2 && newTime < 10) {
-			newTime = "0" + newTime;
+			newTime = '0' + newTime;
 		}
 	};
 
@@ -63,7 +59,7 @@
 		if (newTime) {
 			let text = newTime.toString();
 			text = text.trim();
-			text = text.replace(/\D/g, "");
+			text = text.replace(/\D/g, '');
 			if (text.length > 2) {
 				text = text.substring(1);
 			}
@@ -142,10 +138,7 @@
 		<span class="time-text">
 			{#if completed}
 				<div class="completed-indicator">
-					<svg
-						viewBox="0 0 24 24"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
+					<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
 						><path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -155,9 +148,7 @@
 				</div>
 			{:else if $runningTimerId === id}
 				<div
-					style="animation-play-state: {$pomodoroPaused
-						? 'paused'
-						: 'running'};"
+					style="animation-play-state: {$pomodoroPaused ? 'paused' : 'running'};"
 					class="spinning-indicator"
 				/>
 			{/if}
@@ -281,23 +272,23 @@
 	.time-text {
 		display: flex;
 		align-items: center;
-		font-family: "Monument Extended";
+		font-family: 'Monument Extended';
 		font-size: 1.2rem;
 	}
 
-	input[type="number"] {
+	input[type='number'] {
 		width: 3rem;
 	}
 
-	input[type="number"]::first-line {
+	input[type='number']::first-line {
 		display: inline-block;
 	}
 
-	input[type="text"]:read-only {
+	input[type='text']:read-only {
 		padding: 0.6rem 0;
 	}
 
-	input[type="text"] {
+	input[type='text'] {
 		width: 100%;
 	}
 
@@ -311,8 +302,6 @@
 			column-gap: 6px;
 		}
 	}
-
-
 
 	/* Chrome, Safari, Edge, Opera */
 	input::-webkit-outer-spin-button,
