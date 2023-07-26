@@ -1,25 +1,20 @@
 <script>
+	import { browser } from '$app/environment';
+
 	import { theme, currentView } from '$lib/stores/settings.js';
 	import {
 		pomodoroState,
 		stopwatchState,
 		pomodoroPaused,
 		stopwatchPaused
-	} from '$lib/stores/timers.js';
+	} from '$lib/shared/';
+	import { List, Pomodoro, Settings, Stopwatch } from '../lib/widgets';
 
-	import { browser } from '$app/environment';
-
-	import Pomodoro from '$lib/components/Pomodoro.svelte';
-	import Stopwatch from '$lib/components/Stopwatch.svelte';
-	import Settings from '$lib/components/Settings.svelte';
-
-	import List from '$lib/components/List.svelte';
-	import Button from '$lib/Button.svelte';
+	import { Button } from '$lib/shared/';
 
 	$: if ($currentView !== 'settings') {
 		browser ? localStorage.setItem('view', $currentView) : '';
 	}
-
 </script>
 
 <main>
@@ -92,12 +87,6 @@
 			<div class:hide={$currentView !== 'stop'}>
 				<Stopwatch />
 			</div>
-
-			<!-- {#if $currentView === "pomo"}
-        <Pomodoro />
-      {:else if $currentView === "stop"}
-        <Stopwatch />
-      {/if} -->
 		</div>
 	</div>
 
