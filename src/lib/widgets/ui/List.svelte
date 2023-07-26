@@ -53,8 +53,8 @@
 
 {#if pomodoroList}
 	{#if $timers.length > 0}
-		<div class="list-container">
-			<div class="list-header">
+		<div class="flex flex-col">
+			<div class="mb-16 flex items-center justify-between">
 				<p>NEXT UP</p>
 
 				<p
@@ -72,13 +72,13 @@
 			{/each}
 		</div>
 		<!-- {:else}
-		<div class="empty-list">
+		<div class="flex justify-center mt-[10vh] opacity-[0.5]">
 			<p>START ADDING TIMERS</p>
 		</div> -->
 	{/if}
 {:else if $laps.length > 0}
-	<div class="list-container">
-		<div class="list-header">
+	<div class="flex flex-col">
+		<div class="mb-16 flex items-center justify-between">
 			<p>SAVED TIMES</p>
 		</div>
 
@@ -89,36 +89,10 @@
 		{/each}
 	</div>
 {:else}
-	<div class="empty-list">
+	<div class="mt-[10vh] flex justify-center opacity-[0.5]">
 		<p>START ADDING LAPS</p>
 	</div>
 {/if}
 
 <style>
-	.list-container {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.list-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		color: var(--grey-color);
-		margin-bottom: 16px;
-	}
-
-	.empty-list {
-		display: flex;
-		justify-content: center;
-		margin-top: 10vh;
-		opacity: 0.5;
-	}
-
-	/* .time {
-		padding: 2px 3px 0 3px;
-		display: inline;
-		font-family: 'Monument Extended';
-		font-size: 0.8rem;
-	} */
 </style>

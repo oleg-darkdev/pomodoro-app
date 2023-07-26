@@ -63,7 +63,7 @@
 
 	.index {
 		padding: 0.4rem;
-		border: 2px var(--grey-color) solid;
+		border: 2px #808080 solid;
 		border-radius: 50px;
 		min-width: 36px;
 	}
@@ -71,7 +71,7 @@
 	.index p {
 		font-family: 'Monument Extended';
 		font-size: 1rem;
-		color: var(--grey-color);
+		color: #808080;
 		text-align: center;
 	}
 

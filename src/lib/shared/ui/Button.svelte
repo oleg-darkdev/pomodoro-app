@@ -1,5 +1,5 @@
 <script>
-	export let buttonTitle = "Button";
+	export let buttonTitle = 'Button';
 	export let withIcon = false;
 	export let noText = false;
 
@@ -15,7 +15,7 @@
 	export let paused = false;
 
 	export let buttonFunction = (value) => {
-		console.log("Button clicked");
+		console.log('Button clicked');
 	};
 </script>
 
@@ -78,7 +78,7 @@
 	.button-container:active {
 		background-color: #fff;
 		border-color: #fff;
-		color: var(--accent-color);
+		color: #d926aa;
 	}
 
 	.button-container:disabled {
@@ -89,7 +89,7 @@
 
 	.selected {
 		background-color: #000;
-		color: var(--accent-color);
+		color: #d926aa;
 	}
 
 	.destructive {
@@ -122,7 +122,7 @@
 	}
 
 	.running::before {
-		content: "";
+		content: '';
 		position: absolute;
 		background-color: currentColor;
 		bottom: 7px;

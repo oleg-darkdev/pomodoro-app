@@ -2,10 +2,11 @@
 	import Timer from 'tiny-timer';
 	import { browser } from '$app/environment';
 	import { onDestroy } from 'svelte';
-	import { showNotification, playSound } from '../../shared';
+	import { showNotification, playSound, minutsAndSecondsToSecondsConverter } from '../../shared';
+	import { CountdownTime } from '../../entities';
 
 	import { currentView } from '../../stores/settings';
-	import {Button} from '../../shared';
+	import { Button } from '../../shared';
 
 	import {
 		timers,
@@ -18,17 +19,16 @@
 
 	const timer = new Timer();
 
-	let stopped = true;
-	let paused = false;
-	let waiting = false;
-	let done = false;
-	let buttonText = 'Start';
+	let stopped = true,
+		paused = false,
+		waiting = false,
+		done = false,
+		buttonText = 'Start';
 
 	$: $pomodoroPaused = paused;
 
-	let currentIndex = 0;
-
-	let currentTimerCount = '00:00';
+	let currentIndex = 0,
+		currentTimerCount = '00:00';
 
 	onDestroy(() => {
 		stopTimer();
@@ -71,11 +71,15 @@
 
 	function timeAdapter(ms) {
 		let minutes = Math.floor(ms / 60000);
+
 		let seconds = ((ms % 60000) / 1000).toFixed(0);
+
 		return parseInt(seconds) === 60
 			? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
 			: (minutes < 10 ? '0' : '') + minutes + ':' + (parseInt(seconds) < 10 ? '0' : '') + seconds;
 	}
+
+	$: currentTimerCountInSeconds = minutsAndSecondsToSecondsConverter(currentTimerCount);
 
 	timer.on('statusChanged', (status) => {
 		if (status === 'stopped') {
@@ -124,7 +128,7 @@
 	});
 </script>
 
-<h1 class:blink={paused} class="timer-number">{currentTimerCount}</h1>
+<CountdownTime bind:paused bind:currentTimerCountInSeconds />
 
 <div class="action-controls-container">
 	<div class="main-controls">
@@ -232,7 +236,7 @@
 />
 
 <style>
-	.timer-number {
+	/* .timer-number {
 		font-family: 'Monument Extended';
 		font-size: clamp(5rem, 20vw + 1rem, 10rem);
 		line-height: 1;
@@ -240,7 +244,7 @@
 		align-self: center;
 		text-align: center;
 		width: 100%;
-	}
+	} */
 
 	.action-controls-container {
 		display: flex;

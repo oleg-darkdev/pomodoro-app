@@ -2,12 +2,7 @@
 	import { browser } from '$app/environment';
 
 	import { theme, currentView } from '$lib/stores/settings.js';
-	import {
-		pomodoroState,
-		stopwatchState,
-		pomodoroPaused,
-		stopwatchPaused
-	} from '$lib/shared/';
+	import { pomodoroState, stopwatchState, pomodoroPaused, stopwatchPaused } from '$lib/shared/';
 	import { List, Pomodoro, Settings, Stopwatch } from '../lib/widgets';
 
 	import { Button } from '$lib/shared/';
@@ -18,7 +13,7 @@
 </script>
 
 <main>
-	<div class="top-section" style="z-index: 1;">
+	<div class="top-section bg-pink-600" style="z-index: 1;">
 		<div class="section-container">
 			<div class="section-header">
 				<div class="name-container">
@@ -90,7 +85,7 @@
 		</div>
 	</div>
 
-	<div class:settings={$currentView === 'settings'} class="bottom-section">
+	<div class:bg-pink-700={$currentView === 'settings'} class="bottom-section">
 		<div class="section-container">
 			{#if $currentView !== 'settings'}
 				<List pomodoroList={$currentView === 'pomo'} />
@@ -109,7 +104,7 @@
 	.hide {
 		display: none;
 	}
-
+	/* final */
 	.name-container {
 		display: flex;
 		align-items: center;
@@ -117,11 +112,11 @@
 		column-gap: 12px;
 	}
 
-	main {
+	/* main {
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
-	}
+	} */
 
 	.section-container {
 		display: flex;
@@ -137,61 +132,37 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		background-color: var(--accent-color);
-	}
-
-	.bottom-section {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		color: var(--text-color);
-		background-color: var(--background-color);
-		flex-grow: 2;
-		position: relative;
 	}
 
 	.bottom-section::before {
 		content: '';
 		position: fixed;
-		background-color: var(--background-color);
+		background-color: #1e1e1e;
 		left: 0;
 		width: 100%;
 		height: 100%;
 		z-index: -5;
 	}
 
-	.settings {
-		background-color: var(--accent-color);
-	}
-
-	@media (prefers-color-scheme: light) {
-		.settings {
-			background-color: var(--accent-color);
+	@media only screen and (max-width: 600px) {
+		.name-container {
+			display: none;
 		}
 	}
 
-	.section-header {
+	/* for refactoring */
+	.bottom-section {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		align-items: center;
+		color: #000;
+		background-color: #1e1e1e;
+		flex-grow: 2;
+		position: relative;
 	}
 
 	.action-controls-container {
 		display: flex;
 		column-gap: 4px;
-	}
-
-	h1 {
-		font-size: 1.2rem;
-	}
-
-	@media only screen and (max-width: 600px) {
-		.section-header {
-			flex-direction: column;
-			row-gap: 12px;
-		}
-
-		.name-container {
-			display: none;
-		}
 	}
 </style>

@@ -13,47 +13,42 @@
 </main>
 
 <style>
-
 	:global(.list-item) {
-		border-top: 1px solid var(--separator-color);
+		border-top: 1px solid rgba(0, 0, 0, 0.2);
 		position: relative;
 		transition: 0.15s linear;
 	}
 
-
-
 	/* CSS Mini Reset */
-
 
 	:root {
 		--accent-color: #cb2a37;
 		--separator-color: rgba(255, 255, 255, 0.08);
 		--grey-color: #808080;
-		--text-color: #fff;
+		#fff: #fff;
 
-		--background-color: #0a0a0a;
+		#1e1e1e: #0a0a0a;
 	}
 
 	@media (prefers-color-scheme: light) {
 		:root {
 			--separator-color: rgba(0, 0, 0, 0.2);
-			--text-color: #000;
-			--background-color: #dfdfdf;
+			#fff: #000;
+			#1e1e1e: #dfdfdf;
 		}
 	}
-
 
 	::-webkit-scrollbar {
 		width: 10px;
 	}
 
 	::-webkit-scrollbar-track {
-		background-color: var(--grey-color);
+		background-color: #808080;
 		opacity: 0.4;
 	}
 
 	::-webkit-scrollbar-thumb {
-		background-color: var(--background-color);
+		background-color: #1e1e1e;
 		opacity: 0.6;
 		transition: 0.15s linear;
 	}
@@ -62,7 +57,6 @@
 	::-webkit-scrollbar-thumb:active {
 		opacity: 0.8;
 	}
-
 
 	:global(.blink) {
 		animation: blinker 2s ease infinite;

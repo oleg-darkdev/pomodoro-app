@@ -222,7 +222,7 @@
 
 	.sort-icon {
 		cursor: pointer;
-		color: var(--text-color);
+		color: #000;
 		opacity: 0.4;
 		padding: 8px 4px;
 	}
@@ -239,9 +239,9 @@
 
 	.spinning-indicator {
 		margin: auto;
-		border: var(--indicator-border) solid var(--separator-color);
+		border: var(--indicator-border) solid rgba(0, 0, 0, 0.2);
 		border-radius: 50%;
-		border-bottom-color: var(--accent-color);
+		border-bottom-color: #d926aa;
 		height: var(--indicator-size);
 		width: var(--indicator-size);
 		animation: spinner 4s linear infinite;
@@ -259,7 +259,7 @@
 	.completed-indicator {
 		margin: auto;
 		color: white;
-		background-color: var(--accent-color);
+		background-color: #d926aa;
 		border-radius: 50%;
 		height: var(--indicator-size);
 		width: var(--indicator-size);
@@ -318,7 +318,7 @@
 	}
 
 	input {
-		color: var(--text-color);
+		color: #000;
 		background-color: #1d1d1d;
 		padding: 0;
 		text-decoration: none;
@@ -340,7 +340,7 @@
 	}
 
 	input:focus {
-		border: 2px solid var(--accent-color);
+		border: 2px solid #d926aa;
 		-webkit-appearance: none;
 	}
 

@@ -57,7 +57,7 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 4px;
-		border: 2px dotted var(--accent-color);
+		border: 2px dotted #d926aa;
 	}
 
 	.dragging {
