@@ -1,12 +1,12 @@
 <script>
-	import { onDestroy } from 'svelte';
-	import { showNotification, playSound } from '../utils/notifications.js';
-	import { currentView } from '../stores/settings';
-	import Button from '../Button.svelte';
-	import { browser } from '$app/environment';
-
-
 	import Timer from 'tiny-timer';
+	import { browser } from '$app/environment';
+	import { onDestroy } from 'svelte';
+	import { showNotification, playSound } from '../../shared';
+
+	import { currentView } from '../../stores/settings';
+	import {Button} from '../../shared';
+
 	import {
 		timers,
 		newEntry,
@@ -14,7 +14,7 @@
 		runningTimerId,
 		pomodoroPaused,
 		stopwatchState
-	} from '../stores/timers.js';
+	} from '../../shared';
 
 	const timer = new Timer();
 
@@ -122,18 +122,14 @@
 			);
 		}
 	});
-
-
 </script>
-
-
 
 <h1 class:blink={paused} class="timer-number">{currentTimerCount}</h1>
 
 <div class="action-controls-container">
 	<div class="main-controls">
 		<Button
-			buttonTitle={buttonText + " timer"}
+			buttonTitle={buttonText + ' timer'}
 			withIcon
 			buttonFunction={startTimer}
 			disable={timers.length === 0 || done}
@@ -206,14 +202,7 @@
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<rect x="10" y="4" width="3" height="15" rx="1" />
-				<rect
-					x="19"
-					y="10"
-					width="3"
-					height="15"
-					rx="1"
-					transform="rotate(90 19 10)"
-				/>
+				<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
 			</svg>
 		</span>
 		<span slot="label">Add timer</span>
@@ -222,10 +211,10 @@
 
 <svelte:head>
 	<title>
-		{($pomodoroState && !done && $currentView === "pomo") ||
+		{($pomodoroState && !done && $currentView === 'pomo') ||
 		($pomodoroState && !done && !$stopwatchState)
-			? (!paused ? "Running" : "Paused") + " - " + currentTimerCount
-			: "TIMESETS"}
+			? (!paused ? 'Running' : 'Paused') + ' - ' + currentTimerCount
+			: 'TIMESETS'}
 	</title>
 </svelte:head>
 
@@ -235,16 +224,16 @@
 			// Cancel the event as stated by the standard.
 			event.preventDefault();
 			// Chrome requires returnValue to be set.
-			event.returnValue = "";
+			event.returnValue = '';
 			// more compatibility
-			return "...";
+			return '...';
 		}
 	}}
 />
 
 <style>
 	.timer-number {
-		font-family: "Monument Extended";
+		font-family: 'Monument Extended';
 		font-size: clamp(5rem, 20vw + 1rem, 10rem);
 		line-height: 1;
 		margin: 1rem 0 0.5rem 0;

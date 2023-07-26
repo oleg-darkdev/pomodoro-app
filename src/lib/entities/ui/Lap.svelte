@@ -1,7 +1,7 @@
 <script>
-  import { laps } from "../stores/timers";
+  import { laps } from "../../stores/timers";
 
-  import Button from "../Button.svelte";
+  import {Button} from "../../shared/";
 
   export let id;
   export let index;

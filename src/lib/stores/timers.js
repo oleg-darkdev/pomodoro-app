@@ -1,6 +1,5 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
-import { onMount } from 'svelte';
 
 const defaultPomodoros = [
 	{
@@ -49,9 +48,11 @@ export const newEntry = () => {
 };
 
 function timerStore() {
-	let state;
+	let state = defaultPomodoros;
 	//  :
-	state = browser ? JSON.parse(localStorage.getItem('timers')) : defaultPomodoros;
+	// state = browser ? JSON.parse(localStorage.getItem('timers')) : defaultPomodoros;
+
+		// state = browser ? defaultPomodoros  : JSON.parse(localStorage.getItem('timers'));
 
 	const { subscribe, set, update } = writable(state);
 
@@ -115,6 +116,7 @@ export const resetTimers = () => {
 	}
 };
 
+// 
 export const draggingItem = writable();
 
 export const pomodoroState = writable(false);

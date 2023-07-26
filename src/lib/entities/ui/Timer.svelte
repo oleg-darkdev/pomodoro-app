@@ -6,9 +6,9 @@
 		pomodoroState,
 		runningTimerId,
 		pomodoroPaused,
-	} from "../stores/timers.js";
+	} from "../../shared/";
 
-	import Button from "../Button.svelte";
+	import Button from "../../shared/ui/Button.svelte";
 
 	export let id;
 	export let name;

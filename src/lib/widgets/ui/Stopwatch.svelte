@@ -1,38 +1,30 @@
 <script>
-	import Timer from "tiny-timer";
-	import {
-		stopwatchState,
-		laps,
-		pomodoroState,
-		stopwatchPaused,
-	} from "../stores/timers.js";
-	import { hideHour, currentView } from "../stores/settings.js";
-	import { showNotification, playSound } from "../utils/notifications.js";
-
-	import Button from "../Button.svelte";
+	import Timer from 'tiny-timer';
+	import { stopwatchState, laps, pomodoroState, stopwatchPaused } from '../../shared';
+	import { hideHour, currentView } from '../../stores/settings.js';
+	import { showNotification, playSound } from '../../shared/index.js';
+	import { Button } from '../../shared/';
 
 	const timer = new Timer({ stopwatch: true });
 
-	let currentDelay = 0;
+	let currentDelay = 0,
+		hasHours = false;
 
-	let stopped = true;
-	let paused = false;
-	let buttonText = "Start";
+	let stopped = true,
+		paused = false,
+		buttonText = 'Start';
 
 	$: $stopwatchPaused = paused;
-
-	$: defaultTime = $hideHour ? "00:00" : "0:00:00";
+	$: defaultTime = $hideHour ? '00:00' : '0:00:00';
 
 	let timerCountInMs = 0;
 	$: currentTimerCount = defaultTime;
 	$: currentLapCount = defaultTime;
 
-	let hasHours = false;
-
 	const startTimer = () => {
-		if (timer.status === "running") {
+		if (timer.status === 'running') {
 			timer.pause();
-		} else if (timer.status === "paused") {
+		} else if (timer.status === 'paused') {
 			timer.resume();
 		} else {
 			timer.start(35999000, 1000);
@@ -51,7 +43,7 @@
 		currentLapCount = defaultTime;
 	};
 
-	timer.on("tick", (ms) => {
+	timer.on('tick', (ms) => {
 		timerCountInMs = ms;
 		currentTimerCount = timeAdapter(ms);
 		currentLapCount = timeAdapter(ms - currentDelay);
@@ -70,52 +62,47 @@
 		if (!$hideHour || hasHours) {
 			return (
 				hours +
-				":" +
+				':' +
 				(parseInt(seconds) === 60
-					? (minutes + 1 < 10 ? "0" + (minutes + 1) : "" + (minutes + 1)) +
-					  ":00"
-					: (minutes < 10 ? "0" : "") +
+					? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
+					: (minutes < 10 ? '0' : '') +
 					  minutes +
-					  ":" +
-					  (parseInt(seconds) < 10 ? "0" : "") +
+					  ':' +
+					  (parseInt(seconds) < 10 ? '0' : '') +
 					  seconds)
 			);
 		} else {
 			return parseInt(seconds) === 60
-				? (minutes + 1 < 10 ? "0" + (minutes + 1) : "" + (minutes + 1)) + ":00"
-				: (minutes < 10 ? "0" : "") +
-						minutes +
-						":" +
-						(parseInt(seconds) < 10 ? "0" : "") +
-						seconds;
+				? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
+				: (minutes < 10 ? '0' : '') + minutes + ':' + (parseInt(seconds) < 10 ? '0' : '') + seconds;
 		}
 	}
 
-	timer.on("statusChanged", (status) => {
-		if (status === "stopped") {
-			buttonText = "Start";
+	timer.on('statusChanged', (status) => {
+		if (status === 'stopped') {
+			buttonText = 'Start';
 			paused = false;
 			stopped = true;
-		} else if (status === "running") {
-			buttonText = "Pause";
+		} else if (status === 'running') {
+			buttonText = 'Pause';
 			paused = false;
 			stopped = false;
 		} else {
-			buttonText = "Resume";
+			buttonText = 'Resume';
 			paused = true;
 			stopped = false;
 		}
 	});
 
-	timer.on("done", () => {
+	timer.on('done', () => {
 		showNotification(
 			"Stopwatch has reached it's time limit.",
-			"The stopwatch has reached the maximum time of 10 hours."
+			'The stopwatch has reached the maximum time of 10 hours.'
 		);
 	});
 
 	const newLap = () => {
-		playSound("lap");
+		playSound('lap');
 
 		currentDelay = timerCountInMs;
 
@@ -123,7 +110,7 @@
 			id: Date.now(),
 			index: $laps.length,
 			time: currentTimerCount,
-			lapTime: currentLapCount,
+			lapTime: currentLapCount
 		};
 
 		currentLapCount = defaultTime;
@@ -136,11 +123,7 @@
 	<div class="timer">
 		<p>Total</p>
 
-		<h1
-			class:smaller-time={!$hideHour || hasHours}
-			class:blink={paused}
-			class="timer-number"
-		>
+		<h1 class:smaller-time={!$hideHour || hasHours} class:blink={paused} class="timer-number">
 			{currentTimerCount}
 		</h1>
 	</div>
@@ -148,11 +131,7 @@
 	<div class="timer">
 		<p>Lap</p>
 
-		<h1
-			class:smaller-time={!$hideHour || hasHours}
-			class:blink={paused}
-			class="timer-number"
-		>
+		<h1 class:smaller-time={!$hideHour || hasHours} class:blink={paused} class="timer-number">
 			{currentLapCount}
 		</h1>
 	</div>
@@ -160,11 +139,7 @@
 
 <div class="action-controls-container">
 	<div class="main-controls">
-		<Button
-			buttonTitle="Start/pause stopwatch"
-			withIcon
-			buttonFunction={startTimer}
-		>
+		<Button buttonTitle="Start/pause stopwatch" withIcon buttonFunction={startTimer}>
 			<span slot="icon">
 				{#if stopped || paused}
 					<svg
@@ -212,12 +187,7 @@
 		{/if}
 	</div>
 
-	<Button
-		buttonTitle="Save new lap"
-		withIcon
-		disable={stopped}
-		buttonFunction={newLap}
-	>
+	<Button buttonTitle="Save new lap" withIcon disable={stopped} buttonFunction={newLap}>
 		<span slot="icon">
 			<svg
 				width="22"
@@ -227,14 +197,7 @@
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<rect x="10" y="4" width="3" height="15" rx="1" />
-				<rect
-					x="19"
-					y="10"
-					width="3"
-					height="15"
-					rx="1"
-					transform="rotate(90 19 10)"
-				/>
+				<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
 			</svg>
 		</span>
 		<span slot="label">Lap</span>
@@ -243,9 +206,9 @@
 
 <svelte:head>
 	<title>
-		{(!stopped && $currentView === "stop") || (!stopped && !$pomodoroState)
-			? (!paused ? "Running" : "Paused") + " - " + currentTimerCount
-			: "TIMESETS"}
+		{(!stopped && $currentView === 'stop') || (!stopped && !$pomodoroState)
+			? (!paused ? 'Running' : 'Paused') + ' - ' + currentTimerCount
+			: 'TIMESETS'}
 	</title>
 </svelte:head>
 
@@ -255,9 +218,9 @@
 			// Cancel the event as stated by the standard.
 			event.preventDefault();
 			// Chrome requires returnValue to be set.
-			event.returnValue = "";
+			event.returnValue = '';
 			// more compatibility
-			return "...";
+			return '...';
 		}
 	}}
 />
@@ -268,7 +231,7 @@
 	}
 
 	.timer-number {
-		font-family: "Monument Extended";
+		font-family: 'Monument Extended';
 		font-size: clamp(3rem, 20vw + 1rem, 6rem);
 		line-height: 1;
 	}
