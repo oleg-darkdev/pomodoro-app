@@ -1,11 +1,11 @@
 <script>
 	import '../app.css';
-	import 'aos/dist/aos.css';
-	import AOS from 'aos';
-	import { onMount } from 'svelte';
-	onMount(() => {
-		AOS.init();
-	});
+	// import 'aos/dist/aos.css';
+	// import AOS from 'aos';
+	// import { onMount } from 'svelte';
+	// onMount(() => {
+	// 	AOS.init();
+	// });
 </script>
 
 <main class="">
@@ -13,6 +13,15 @@
 </main>
 
 <style>
+
+	:global(.list-item) {
+		border-top: 1px solid var(--separator-color);
+		position: relative;
+		transition: 0.15s linear;
+	}
+
+
+
 	/* CSS Mini Reset */
 
 
@@ -33,7 +42,7 @@
 		}
 	}
 
-	
+
 	::-webkit-scrollbar {
 		width: 10px;
 	}
