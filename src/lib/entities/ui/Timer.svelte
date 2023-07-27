@@ -19,8 +19,6 @@
 	}
 
 	const deleteTimer = () => {
-		console.log('click');
-
 		timers.delete(id);
 	};
 
