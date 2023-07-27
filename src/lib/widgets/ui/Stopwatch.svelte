@@ -117,7 +117,7 @@
 
 		$laps = [lap].concat($laps);
 
-  
+
 	};
 </script>
 
@@ -139,7 +139,7 @@
 	</div>
 </div>
 
-<div class="action-controls-container">
+<div class="action-controls-container ">
 	<div class="main-controls">
 		<Button buttonTitle="Start/pause stopwatch" withIcon buttonFunction={startTimer}>
 			<span slot="icon">

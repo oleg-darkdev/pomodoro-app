@@ -16,14 +16,6 @@
 	<div class="top-section bg-pink-600" style="z-index: 1;">
 		<div class="section-container">
 			<div class="section-header">
-				<div class="name-container">
-					<img
-						style="max-height: 22px; filter: drop-shadow(0 1px 6px rgba(50, 50, 50, 0.5));"
-						alt="Timesets logo"
-						src="/img/timesets-logo.png"
-					/>
-					<h1>TIMESETS</h1>
-				</div>
 				<div class="action-controls-container">
 					<Button
 						grows

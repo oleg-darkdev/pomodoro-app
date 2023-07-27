@@ -25,16 +25,12 @@
 		--accent-color: #cb2a37;
 		--separator-color: rgba(255, 255, 255, 0.08);
 		--grey-color: #808080;
-		#fff: #fff;
 
-		#1e1e1e: #0a0a0a;
 	}
 
 	@media (prefers-color-scheme: light) {
 		:root {
 			--separator-color: rgba(0, 0, 0, 0.2);
-			#fff: #000;
-			#1e1e1e: #dfdfdf;
 		}
 	}
 
