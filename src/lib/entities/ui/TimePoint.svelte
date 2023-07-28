@@ -26,7 +26,7 @@
 <div
 	class:dragging={dragging && draggingIndex === index}
 	class:hovering={dragging && draggingIndex !== index && draggingOverIndex === index}
-	class="list-item"
+	class=""
 	data-index={index}
 	on:drop={(ev) => {
 		drop(ev, index);
