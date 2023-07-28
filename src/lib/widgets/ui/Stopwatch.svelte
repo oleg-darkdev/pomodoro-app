@@ -1,25 +1,32 @@
 <script>
 	import Timer from 'tiny-timer';
-	import { stopwatchState, laps, pomodoroState, stopwatchPaused } from '../../shared';
-	import { hideHour, currentView } from '../../stores/settings.js';
-	import { showNotification, playSound } from '../../shared/';
+	import { stopwatchState, laps, stopwatchPaused } from '../../shared';
+
+	import {
+		showNotification,
+		playSound,
+		timeAdapterStopwatch,
+		minutsAndSecondsToSecondsConverter
+	} from '../../shared/';
 	import { Button } from '../../shared/';
+	import { CountdownTime } from '../../entities';
 
 	const timer = new Timer({ stopwatch: true });
 
-	let currentDelay = 0,
-		hasHours = false;
-
+	let currentDelay = 0;
 	let stopped = true,
 		paused = false,
 		buttonText = 'Start';
 
 	$: $stopwatchPaused = paused;
-	$: defaultTime = $hideHour ? '00:00' : '0:00:00';
+	$: defaultTime = '00:00';
 
 	let timerCountInMs = 0;
 	$: currentTimerCount = defaultTime;
 	$: currentLapCount = defaultTime;
+
+	$: currentTimerCountInSeconds = '0000';
+	$: currentTimerLapCountInSeconds = '0000';
 
 	const startTimer = () => {
 		if (timer.status === 'running') {
@@ -34,7 +41,7 @@
 	};
 
 	const stopTimer = () => {
-		hasHours = false;
+		playSound('/sounds/timer-done.wav');
 		currentDelay = 0;
 		timer.stop();
 		$stopwatchState = false;
@@ -45,38 +52,13 @@
 
 	timer.on('tick', (ms) => {
 		timerCountInMs = ms;
-		currentTimerCount = timeAdapter(ms);
-		currentLapCount = timeAdapter(ms - currentDelay);
+
+		currentTimerCount = timeAdapterStopwatch(ms);
+		currentLapCount = timeAdapterStopwatch(ms - currentDelay);
+
+		currentTimerLapCountInSeconds = minutsAndSecondsToSecondsConverter(currentLapCount);
+		currentTimerCountInSeconds = minutsAndSecondsToSecondsConverter(currentTimerCount);
 	});
-
-	function timeAdapter(ms) {
-		let hours = Math.floor(ms / 3600000);
-		if (hours > 0) {
-			hasHours = true;
-		}
-
-		let minutesMs = Math.floor(ms - 3600000 * hours);
-		let minutes = Math.floor(minutesMs / 60000);
-		let seconds = ((ms % 60000) / 1000).toFixed(0);
-
-		if (!$hideHour || hasHours) {
-			return (
-				hours +
-				':' +
-				(parseInt(seconds) === 60
-					? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
-					: (minutes < 10 ? '0' : '') +
-					  minutes +
-					  ':' +
-					  (parseInt(seconds) < 10 ? '0' : '') +
-					  seconds)
-			);
-		} else {
-			return parseInt(seconds) === 60
-				? (minutes + 1 < 10 ? '0' + (minutes + 1) : '' + (minutes + 1)) + ':00'
-				: (minutes < 10 ? '0' : '') + minutes + ':' + (parseInt(seconds) < 10 ? '0' : '') + seconds;
-		}
-	}
 
 	timer.on('statusChanged', (status) => {
 		if (status === 'stopped') {
@@ -102,7 +84,7 @@
 	});
 
 	const newLap = () => {
-		playSound('lap');
+		playSound('/sounds/lap.wav');
 
 		currentDelay = timerCountInMs;
 
@@ -116,101 +98,99 @@
 		currentLapCount = defaultTime;
 
 		$laps = [lap].concat($laps);
-
-
 	};
 </script>
 
-<div class="stopwatch-timers">
-	<div class="timer">
-		<p>Total</p>
+<div class="bg-pink-600 px-8 py-2">
+	<div class="stopwatch-timers">
+		<div class="timer">
+			<p class="text-1xl font-bold text-gray-200">Total</p>
 
-		<h1 class:smaller-time={!$hideHour || hasHours} class:blink={paused} class="timer-number">
-			{currentTimerCount}
-		</h1>
+			<CountdownTime bind:paused bind:currentTimerCountInSeconds />
+		</div>
+
+		<div class="timer">
+			<p class="text-1xl font-bold text-black">Lap</p>
+
+			<CountdownTime
+				textColor="text-black"
+				bind:paused
+				bind:currentTimerCountInSeconds={currentTimerLapCountInSeconds}
+			/>
+		</div>
 	</div>
 
-	<div class="timer">
-		<p>Lap</p>
-
-		<h1 class:smaller-time={!$hideHour || hasHours} class:blink={paused} class="timer-number">
-			{currentLapCount}
-		</h1>
-	</div>
-</div>
-
-<div class="action-controls-container ">
-	<div class="main-controls">
-		<Button buttonTitle="Start/pause stopwatch" withIcon buttonFunction={startTimer}>
-			<span slot="icon">
-				{#if stopped || paused}
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M18.3412 9.84166C19.2196 10.3565 19.2196 11.6435 18.3412 12.1583L6.97647 18.8188C6.09804 19.3336 5 18.6901 5 17.6605L5 4.33953C5 3.30989 6.09804 2.66637 6.97647 3.18119L18.3412 9.84166Z"
-						/>
-					</svg>
-				{:else}
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect x="5" y="4" width="5" height="14" rx="1" />
-						<rect x="14" y="4" width="5" height="14" rx="1" />
-					</svg>
-				{/if}
-			</span>
-			<span slot="label">{buttonText}</span>
-		</Button>
-
-		{#if !stopped}
-			<Button buttonTitle="Stop stopwatch" withIcon buttonFunction={stopTimer}>
+	<div class="action-controls-container ">
+		<div class="main-controls">
+			<Button buttonTitle="Start/pause stopwatch" withIcon buttonFunction={startTimer}>
 				<span slot="icon">
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect x="3" y="3" width="16" height="16" rx="2" />
-					</svg>
+					{#if stopped || paused}
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M18.3412 9.84166C19.2196 10.3565 19.2196 11.6435 18.3412 12.1583L6.97647 18.8188C6.09804 19.3336 5 18.6901 5 17.6605L5 4.33953C5 3.30989 6.09804 2.66637 6.97647 3.18119L18.3412 9.84166Z"
+							/>
+						</svg>
+					{:else}
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<rect x="5" y="4" width="5" height="14" rx="1" />
+							<rect x="14" y="4" width="5" height="14" rx="1" />
+						</svg>
+					{/if}
 				</span>
-				<span slot="label">Stop</span>
+				<span slot="label">{buttonText}</span>
 			</Button>
-		{/if}
-	</div>
 
-	<Button buttonTitle="Save new lap" withIcon disable={stopped} buttonFunction={newLap}>
-		<span slot="icon">
-			<svg
-				width="22"
-				height="22"
-				viewBox="0 0 22 22"
-				fill="currentColor"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<rect x="10" y="4" width="3" height="15" rx="1" />
-				<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
-			</svg>
-		</span>
-		<span slot="label">Lap</span>
-	</Button>
+			{#if !stopped}
+				<Button buttonTitle="Stop stopwatch" withIcon buttonFunction={stopTimer}>
+					<span slot="icon">
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<rect x="3" y="3" width="16" height="16" rx="2" />
+						</svg>
+					</span>
+					<span slot="label">Stop</span>
+				</Button>
+			{/if}
+		</div>
+
+		<Button buttonTitle="Save new lap" withIcon disable={stopped} buttonFunction={newLap}>
+			<span slot="icon">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 22 22"
+					fill="currentColor"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<rect x="10" y="4" width="3" height="15" rx="1" />
+					<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
+				</svg>
+			</span>
+			<span slot="label">Lap</span>
+		</Button>
+	</div>
 </div>
 
 <svelte:head>
 	<title>
-		{(!stopped && $currentView === 'stop') || (!stopped && !$pomodoroState)
-			? (!paused ? 'Running' : 'Paused') + ' - ' + currentTimerCount
-			: 'TIMESETS'}
+		{!stopped ? (!paused ? 'Uruchomiony' : 'Zatrzymany') + ' - ' + currentTimerCount : 'Stoper'}
 	</title>
 </svelte:head>
 
@@ -232,21 +212,10 @@
 		margin: 1rem 0;
 	}
 
-	.timer-number {
-		font-family: 'Monument Extended';
-		font-size: clamp(3rem, 20vw + 1rem, 6rem);
-		line-height: 1;
-	}
-
 	.timer {
 		display: flex;
 		justify-content: space-between;
 		text-align: right;
-	}
-
-	.timer p {
-		font-size: 1.2rem;
-		padding-top: 1rem;
 	}
 
 	.action-controls-container {
@@ -264,19 +233,10 @@
 		.timer {
 			flex-direction: column;
 		}
-
-		.timer-number {
-			align-self: center;
-		}
-
 		.timer p {
 			align-self: flex-start;
 			padding-top: 0;
-			padding-bottom: 0.4rem;
-		}
-
-		.smaller-time {
-			font-size: 4.2rem;
+			padding-bottom: 0.2rem;
 		}
 	}
 </style>

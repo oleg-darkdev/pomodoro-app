@@ -1,16 +1,12 @@
 <script>
-	import { browser } from '$app/environment';
-
-	import { pomodoroState, stopwatchState, pomodoroPaused, stopwatchPaused } from '$lib/shared/';
-	import { List, Pomodoro, Settings, Stopwatch } from '../lib/widgets';
+	// currentView
+	import {  pomodoroState,  pomodoroPaused } from '$lib/shared/';
+	import { ListPomodoro, Pomodoro } from '$lib/widgets';
 
 	import { Button } from '$lib/shared/';
-
-
 </script>
 
-<main>
-	<div class="top-section bg-pink-600" style="z-index: 1;">
+	<!-- <div class="top-section bg-pink-600" style="z-index: 1;">
 		<div class="section-container">
 			<div class="section-header">
 				<div class="action-controls-container">
@@ -19,19 +15,28 @@
 						running={$pomodoroState}
 						paused={$pomodoroState && $pomodoroPaused}
 						buttonTitle="Pomodoro mode"
-
+						buttonFunction={() => {
+							$currentView = 'pomo';
+						}}
+						selected={$currentView === 'pomo'}
 						><span slot="label">POMODORO</span>
 					</Button>
 					<Button
 						grows
-						running={$stopwatchState}
-						paused={$stopwatchState && $stopwatchPaused}
+						running={$pomodoroState}
+						paused={$pomodoroState && $pomodoroPaused}
 						buttonTitle="Stopwatch mode"
-						><span slot="label">STOPWATCH</span></Button
+						buttonFunction={() => {
+							$currentView = 'stop';
+						}}
+						selected={$currentView === 'stop'}><span slot="label">STOPWATCH</span></Button
 					>
 					<Button
 						buttonTitle="Settings"
-
+						buttonFunction={() => {
+							$currentView = 'settings';
+						}}
+						selected={$currentView === 'settings'}
 						withIcon
 						noText
 					>
@@ -55,22 +60,28 @@
 				</div>
 			</div>
 
-			<!-- <div class:hide={$currentView !== 'pomo'}>
-				<Pomodoro />
-			</div> -->
-		</div>
-	</div>
 
-	<!-- <div class:bg-pink-700={$currentView === 'settings'} class="bottom-section">
-		<div class="section-container">
-			{#if $currentView !== 'settings'}
-				<List pomodoroList={$currentView === 'pomo'} />
-			{:else}
-				<Settings />
-			{/if}
-		</div>
 	</div> -->
-</main>
+
+	<!-- <div class:hide={$currentView !== 'pomo'}>
+			</div> -->
+
+	<!-- <div class:hide={$currentView !== 'stop'}> -->
+	<!-- </div> -->
+<Button
+	grows
+	running={$pomodoroState}
+	paused={$pomodoroState && $pomodoroPaused}
+	><span slot="label">POMODORO</span></Button
+>
+
+
+<div class="max-w-2xl justify-center">
+	<Pomodoro />
+
+	<ListPomodoro />
+</div>
+
 
 <style>
 	.hide {

@@ -5,7 +5,6 @@
 	import { showNotification, playSound, minutsAndSecondsToSecondsConverter } from '../../shared';
 	import { CountdownTime } from '../../entities';
 
-	import { currentView } from '../../stores/settings';
 	import { Button } from '../../shared';
 
 	import {
@@ -56,6 +55,8 @@
 	};
 
 	const stopTimer = () => {
+		playSound('/sounds/timer-done.wav');
+
 		waiting = false;
 		done = false;
 		currentIndex = 0;
@@ -99,7 +100,7 @@
 
 	timer.on('done', () => {
 		let currentName = $timers[currentIndex].name;
-		playSound('done');
+		playSound('/sounds/timer-done.wav');
 
 		$timers[currentIndex].completed = true;
 
@@ -128,95 +129,96 @@
 	});
 </script>
 
-<CountdownTime bind:paused bind:currentTimerCountInSeconds />
+<div class="bg-pink-600 px-8 py-2">
+	<CountdownTime bind:paused bind:currentTimerCountInSeconds />
 
-<div class="action-controls-container">
-	<div class="main-controls">
-		<Button
-			buttonTitle={buttonText + ' timer'}
-			withIcon
-			buttonFunction={startTimer}
-			disable={timers.length === 0 || done}
-		>
-			<span slot="icon">
-				{#if stopped || paused}
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M18.3412 9.84166C19.2196 10.3565 19.2196 11.6435 18.3412 12.1583L6.97647 18.8188C6.09804 19.3336 5 18.6901 5 17.6605L5 4.33953C5 3.30989 6.09804 2.66637 6.97647 3.18119L18.3412 9.84166Z"
-						/>
-					</svg>
-				{:else}
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect x="5" y="4" width="5" height="14" rx="1" />
-						<rect x="14" y="4" width="5" height="14" rx="1" />
-					</svg>
-				{/if}
-			</span>
-			<span slot="label">{buttonText}</span>
-		</Button>
-
-		{#if !stopped || done}
-			<Button buttonTitle="Stop the timer" withIcon buttonFunction={stopTimer}>
+	<div class="action-controls-container">
+		<div class="main-controls">
+			<Button
+				buttonTitle={buttonText + ' timer'}
+				withIcon
+				buttonFunction={startTimer}
+				disable={timers.length === 0 || done}
+			>
 				<span slot="icon">
-					<svg
-						width="22"
-						height="22"
-						viewBox="0 0 22 22"
-						fill="currentColor"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect x="3" y="3" width="16" height="16" rx="2" />
-					</svg>
-				</span>
-				<span slot="label">
-					{#if !done}
-						Stop
+					{#if stopped || paused}
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M18.3412 9.84166C19.2196 10.3565 19.2196 11.6435 18.3412 12.1583L6.97647 18.8188C6.09804 19.3336 5 18.6901 5 17.6605L5 4.33953C5 3.30989 6.09804 2.66637 6.97647 3.18119L18.3412 9.84166Z"
+							/>
+						</svg>
 					{:else}
-						Complete
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<rect x="5" y="4" width="5" height="14" rx="1" />
+							<rect x="14" y="4" width="5" height="14" rx="1" />
+						</svg>
 					{/if}
 				</span>
+				<span slot="label">{buttonText}</span>
 			</Button>
-		{/if}
-	</div>
 
-	<Button
-		buttonTitle="Add a new timer"
-		withIcon
-		disable={!stopped || done}
-		buttonFunction={newEntry}
-	>
-		<span slot="icon">
-			<svg
-				width="22"
-				height="22"
-				viewBox="0 0 22 22"
-				fill="currentColor"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<rect x="10" y="4" width="3" height="15" rx="1" />
-				<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
-			</svg>
-		</span>
-		<span slot="label">Add timer</span>
-	</Button>
+			{#if !stopped || done}
+				<Button buttonTitle="Stop the timer" withIcon buttonFunction={stopTimer}>
+					<span slot="icon">
+						<svg
+							width="22"
+							height="22"
+							viewBox="0 0 22 22"
+							fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<rect x="3" y="3" width="16" height="16" rx="2" />
+						</svg>
+					</span>
+					<span slot="label">
+						{#if !done}
+							Stop
+						{:else}
+							Complete
+						{/if}
+					</span>
+				</Button>
+			{/if}
+		</div>
+
+		<Button
+			buttonTitle="Add a new timer"
+			withIcon
+			disable={!stopped || done}
+			buttonFunction={newEntry}
+		>
+			<span slot="icon">
+				<svg
+					width="22"
+					height="22"
+					viewBox="0 0 22 22"
+					fill="currentColor"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<rect x="10" y="4" width="3" height="15" rx="1" />
+					<rect x="19" y="10" width="3" height="15" rx="1" transform="rotate(90 19 10)" />
+				</svg>
+			</span>
+			<span slot="label">Add timer</span>
+		</Button>
+	</div>
 </div>
 
 <svelte:head>
 	<title>
-		{($pomodoroState && !done && $currentView === 'pomo') ||
-		($pomodoroState && !done && !$stopwatchState)
+		{($pomodoroState && !done) || ($pomodoroState && !done && !$stopwatchState)
 			? (!paused ? 'Running' : 'Paused') + ' - ' + currentTimerCount
 			: 'TIMESETS'}
 	</title>

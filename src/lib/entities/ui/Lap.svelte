@@ -1,7 +1,5 @@
 <script>
-	import { laps } from '../../shared/';
-
-	import { Button } from '../../shared/';
+	import { laps, Button, ButtonForTimingList } from '../../shared/';
 
 	export let id;
 	export let index;
@@ -18,12 +16,16 @@
 		<div class="index">
 			<p>{index + 1}</p>
 		</div>
-		<p>Total <br /> <span class="time">{time}</span></p>
-		<p>Lap <br /> <span class="time">{lapTime}</span></p>
+		<p class="text-1xl text-gray-100">
+			Total <br /> <span class="inline pt-2 font-black text-pink-600 ">{time}</span>
+		</p>
+		<p class="text-1xl text-gray-100">
+			Lap <br /> <span class="inline pt-2 font-black text-pink-600 ">{lapTime}</span>
+		</p>
 	</div>
 
 	<div class="right-side">
-		<Button
+		<ButtonForTimingList
 			buttonTitle="Delete time"
 			smaller
 			destructive
@@ -33,10 +35,10 @@
 		>
 			<span slot="icon">
 				<svg
+					class="fill-pink-600 hover:fill-black"
 					width="22"
 					height="22"
 					viewBox="0 0 22 22"
-					fill="currentColor"
 					xmlns="http://www.w3.org/2000/svg"
 				>
 					<path
@@ -46,7 +48,7 @@
 					/>
 				</svg>
 			</span>
-		</Button>
+		</ButtonForTimingList>
 	</div>
 </div>
 
@@ -73,14 +75,6 @@
 		font-size: 1rem;
 		color: #808080;
 		text-align: center;
-	}
-
-	.time {
-		display: inline;
-		padding-top: 2px;
-		font-family: 'Monument Extended';
-		margin: 0;
-		font-size: 1.2rem;
 	}
 
 	.left-side {

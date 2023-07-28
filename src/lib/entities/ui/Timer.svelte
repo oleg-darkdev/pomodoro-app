@@ -1,9 +1,7 @@
 <script>
 	import { fly } from 'svelte/transition';
-
 	import { timers, pomodoroState, runningTimerId, pomodoroPaused } from '../../shared/';
-
-	import Button from '../../shared/ui/Button.svelte';
+	import { Button } from '../../shared/';
 
 	export let id;
 	export let name;
@@ -74,7 +72,9 @@
 
 <div
 	class:blink={$runningTimerId === id && $pomodoroPaused}
-	class="timer-container"
+	class="timer-container flex items-center justify-between p-1 {$runningTimerId === id
+		? 'm-2 rounded-2xl border-2 border-pink-600 px-4 text-pink-600'
+		: ''}"
 	draggable={holdingSortHandle}
 	on:dragstart={(event) => {
 		start(event, id);
@@ -84,59 +84,51 @@
 		end(event);
 	}}
 >
-	<div class="left-side">
-		{#if !$pomodoroState}
-			<div
-				id="sort-icon"
-				class="sort-icon"
-				on:touchstart={() => {
-					holdingSortHandle = true;
-				}}
-				on:touchend={() => {
-					holdingSortHandle = false;
-				}}
-				on:mousedown={() => {
-					holdingSortHandle = true;
-				}}
-				on:mouseup={() => {
-					holdingSortHandle = false;
-				}}
-			>
-				<svg
-					height="24"
-					width="24"
-					clip-rule="evenodd"
-					fill-rule="evenodd"
-					stroke-linejoin="round"
-					stroke-miterlimit="2"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						d="m21 17.75c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75z"
-						fill-rule="nonzero"
-					/></svg
+	<div class="left-side ">
+		<div class="">
+			{#if !$pomodoroState}
+				<div
+					id="sort-icon"
+					class="sort-icon"
+					on:touchstart={() => {
+						holdingSortHandle = true;
+					}}
+					on:touchend={() => {
+						holdingSortHandle = false;
+					}}
+					on:mousedown={() => {
+						holdingSortHandle = true;
+					}}
+					on:mouseup={() => {
+						holdingSortHandle = false;
+					}}
 				>
-			</div>
-		{/if}
-
-		<input
-			class:completed
-			bind:value={newName}
-			on:blur={updateTimer}
-			on:submit={updateTimer}
-			readonly={$pomodoroState}
-			type="text"
-			maxlength="23"
-			placeholder="Timer name"
-		/>
-	</div>
-
-	<div class="right-side">
-		<span class="time-text">
-			{#if completed}
-				<div class="completed-indicator">
-					<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+					<svg
+						class="fill-gray-200"
+						height="24"
+						width="24"
+						clip-rule="evenodd"
+						fill-rule="evenodd"
+						stroke-linejoin="round"
+						stroke-miterlimit="2"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+						><path
+							d="m21 17.75c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75z"
+							fill-rule="nonzero"
+						/></svg
+					>
+				</div>
+			{:else if $runningTimerId === id}
+				<div
+					style="margin-right: 20px; animation-play-state: {$pomodoroPaused
+						? 'paused'
+						: 'running'};"
+					class="spinning-indicator  h-10 w-10"
+				/>
+			{:else if completed}
+				<div class="completed-indicator mr-4 h-8 w-8 bg-pink-600">
+					<svg viewBox="0 0 24 24" fill="fill-pink-600" xmlns="http://www.w3.org/2000/svg"
 						><path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -144,29 +136,72 @@
 						/></svg
 					>
 				</div>
-			{:else if $runningTimerId === id}
-				<div
-					style="animation-play-state: {$pomodoroPaused ? 'paused' : 'running'};"
-					class="spinning-indicator"
-				/>
 			{/if}
+		</div>
 
-			<input
-				class:completed
-				bind:value={newTime}
-				on:input={checkTime}
-				on:blur={updateTimer}
-				on:submit={updateTimer}
-				readonly={$pomodoroState}
-				type="number"
-				maxlength="2"
-				max="60"
-				min="1"
-				placeholder="00"
-				style="-moz-appearance: textfield;"
-			/>
-			<p class:completed class="time-text">:00</p>
-		</span>
+		<input
+			type="text"
+			maxlength="23"
+			bind:value={newName}
+			on:blur={updateTimer}
+			on:submit={updateTimer}
+			readonly={$pomodoroState}
+			class="peer block w-full {$runningTimerId === id
+				? 'text-xl font-black text-pink-600'
+				: 'text-md text-white '} {completed
+				? 'line-through'
+				: ''} appearance-none border-0 border-b-2  border-gray-600 bg-transparent py-2.5   px-0 focus:border-pink-500 focus:outline-none focus:ring-0"
+			placeholder="Timer name"
+			class:completed
+		/>
+	</div>
+
+	<div class="right-side ">
+		<div class="time-text">
+			<div class="flex flex-row flex-wrap">
+				<p
+					class="mr-2  {completed
+						? 'text-md text-gray-500 line-through completed'
+						: $runningTimerId === id
+						? 'text-pink-600 text-2xl font-bold'
+						: 'text-white text-2xl font-bold'}
+            }"
+				>
+					{newTime}
+					{#if $pomodoroState}
+						<span> min. </span>
+					{/if}
+				</p>
+
+				{#if !$pomodoroState}
+					<div class="flex flex-col">
+						<input
+							class:completed
+							bind:value={newTime}
+							on:input={checkTime}
+							on:blur={updateTimer}
+							on:submit={updateTimer}
+							readonly={$pomodoroState}
+							type="range"
+							min="1"
+							placeholder="00"
+							style="-moz-appearance: textfield;"
+							max="60"
+							maxlength="2"
+							class="range"
+							step="1"
+						/>
+						<div class="flex w-full justify-between px-2 text-xs">
+							<span>|</span>
+							<span class="text-pink-300">|</span>
+							<span class="text-pink-400">|</span>
+							<span class="text-rose-400">|</span>
+							<span class="text-rose-600">|</span>
+						</div>
+					</div>
+				{/if}
+			</div>
+		</div>
 
 		{#if !$pomodoroState}
 			<div in:fly|local={{ x: 20 }}>
@@ -201,15 +236,9 @@
 
 <style>
 	.timer-container {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 1rem 0;
 		column-gap: 6px;
 		height: 80px;
 		max-width: 100%;
-		--indicator-size: 22px;
-		--indicator-border: 4px;
 	}
 
 	.left-side {
@@ -225,10 +254,6 @@
 		padding: 8px 4px;
 	}
 
-	.left-side .completed {
-		text-decoration: line-through;
-	}
-
 	.right-side {
 		display: flex;
 		align-items: center;
@@ -237,11 +262,10 @@
 
 	.spinning-indicator {
 		margin: auto;
-		border: var(--indicator-border) solid rgba(0, 0, 0, 0.2);
+		border: 8px solid rgba(0, 0, 0, 0.2);
 		border-radius: 50%;
 		border-bottom-color: #d926aa;
-		height: var(--indicator-size);
-		width: var(--indicator-size);
+
 		animation: spinner 4s linear infinite;
 	}
 
@@ -255,12 +279,8 @@
 	}
 
 	.completed-indicator {
-		margin: auto;
 		color: white;
-		background-color: #d926aa;
 		border-radius: 50%;
-		height: var(--indicator-size);
-		width: var(--indicator-size);
 	}
 
 	.completed {
@@ -274,28 +294,11 @@
 		font-size: 1.2rem;
 	}
 
-	input[type='number'] {
-		width: 3rem;
-	}
-
-	input[type='number']::first-line {
-		display: inline-block;
-	}
-
 	input[type='text']:read-only {
 		padding: 0.6rem 0;
 	}
 
-	input[type='text'] {
-		width: 100%;
-	}
-
 	@media screen and (max-width: 600px) {
-		.timer-container {
-			--indicator-size: 28px;
-			--indicator-border: 5px;
-		}
-
 		.right-side {
 			column-gap: 6px;
 		}
@@ -310,47 +313,14 @@
 		margin: 0;
 	}
 
-	/* Firefox */
-	input[type='number'] {
-		-moz-appearance: textfield;
-	}
-
-	input {
-		color: #000;
-		background-color: #1d1d1d;
-		padding: 0;
-		text-decoration: none;
-		border-radius: 2px;
-		border: 2px solid transparent;
-		transition: 100ms;
-		height: 42px;
-	}
-
 	input[type='text'] {
 		padding: 0.6rem 0.4rem;
 		border-radius: 2px;
-	}
-
-	input[type='number'] {
-		font-family: 'Monument Extended';
-		text-align: right;
-		font-size: inherit;
-	}
-
-	input:focus {
-		border: 2px solid #d926aa;
-		-webkit-appearance: none;
 	}
 
 	input:read-only {
 		color: inherit;
 		background-color: transparent;
 		border: 0;
-	}
-
-	@media (prefers-color-scheme: light) {
-		input {
-			background-color: #c5c5c5;
-		}
 	}
 </style>
