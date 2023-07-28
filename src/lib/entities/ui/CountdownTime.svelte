@@ -14,11 +14,11 @@
 		}
 	}, 1000);
 
-	export let currentTimerCountInSeconds, paused;
+	export let currentTimerCountInSeconds, paused, textColor;
 </script>
 
 <div class:blink={paused} class="flex flex-row flex-wrap items-center justify-center ">
-	<span style="font-size: 100px;" class="font-mono align-center countdown font-black ">
+	<span style="font-size: 100px;" class="{textColor} font-mono align-center countdown font-black ">
 		<span style="--value:{minutes};" />:<span style="--value:{seconds};" />
 	</span>
 </div>
