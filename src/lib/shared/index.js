@@ -1,5 +1,7 @@
 import SummaryTime from './ui/SummaryTime.svelte';
 import Button from './ui/Button.svelte';
+import ButtonForTimingList from './ui/ButtonForTimingList.svelte';
+
 import Switch from './ui/Toggle.svelte';
 
 // data
@@ -9,6 +11,7 @@ import defaultPomodoros from './data/defaultPomodoros';
 import showNotification from './utils/showNotification';
 import playSound from './utils/playSound';
 import minutsAndSecondsToSecondsConverter from './utils/minutsAndSecondsToSecondsConverter';
+import timeAdapterStopwatch from './utils/timeAdapterStopwatch';
 
 // stores
 import draggingItem from './data/stores/draggingItem';
@@ -23,12 +26,14 @@ import laps from './data/stores/laps';
 import timers from './data/stores/timers';
 
 export {
-	SummaryTime,
+  SummaryTime,
+  ButtonForTimingList,
   defaultPomodoros,
   minutsAndSecondsToSecondsConverter,
 	Switch,
 	Button,
-	showNotification,
+  showNotification,
+  timeAdapterStopwatch,
 	draggingItem,
 	pomodoroState,
 	stopwatchPaused,
