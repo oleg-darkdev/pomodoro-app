@@ -93,20 +93,20 @@
 	}
 
 	.destructive {
-		color: #c90e3b;
-		border-color: #c90e3b;
+		color: #db2777;
+		border-color: #db2777;
 	}
 
 	.destructive:hover {
 		color: #fff;
-		border-color: #c90e3b;
-		background-color: #c90e3b;
+		border-color: #db2777;
+		background-color: #db2777;
 	}
 
 	.destructive:active {
 		background-color: #fff;
 		border-color: #fff;
-		color: #c90e3b;
+		color: #db2777;
 	}
 
 	.smaller {
