@@ -1,7 +1,7 @@
 import SummaryTime from './ui/SummaryTime.svelte';
 import Button from './ui/Button.svelte';
 import ButtonForTimingList from './ui/ButtonForTimingList.svelte';
-
+import NavBtnAppFooter from './ui/NavBtnAppFooter.svelte';
 import Switch from './ui/Toggle.svelte';
 
 // data
@@ -27,6 +27,7 @@ import timers from './data/stores/timers';
 
 export {
   SummaryTime,
+  NavBtnAppFooter,
   ButtonForTimingList,
   defaultPomodoros,
   minutsAndSecondsToSecondsConverter,
