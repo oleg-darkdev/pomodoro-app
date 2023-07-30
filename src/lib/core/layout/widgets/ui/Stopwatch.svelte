@@ -1,15 +1,15 @@
 <script>
 	import Timer from 'tiny-timer';
-	import { stopwatchState, laps, stopwatchPaused } from '../../shared';
+	import { stopwatchState, laps, stopwatchPaused } from '@coreShared';
 
 	import {
 		showNotification,
 		playSound,
 		timeAdapterStopwatch,
 		minutsAndSecondsToSecondsConverter
-	} from '../../shared/';
-	import { Button } from '../../shared/';
-	import { CountdownTime } from '../../entities';
+	} from '@coreShared';
+	import { Button } from '@coreShared';
+	import { CountdownTime } from '@coreEntities';
 
 	const timer = new Timer({ stopwatch: true });
 

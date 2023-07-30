@@ -1,5 +1,5 @@
 <script>
-	import { timers } from '../../shared';
+	import { timers } from '@coreShared';
 
 	$: timeMap = $timers?.map((index) => index.time);
 

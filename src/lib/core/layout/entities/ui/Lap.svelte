@@ -1,5 +1,5 @@
 <script>
-	import { laps, Button, ButtonForTimingList } from '../../shared/';
+	import { laps, Button, ButtonForTimingList } from '@coreShared';
 
 	export let id;
 	export let index;

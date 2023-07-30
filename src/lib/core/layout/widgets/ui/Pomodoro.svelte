@@ -2,10 +2,10 @@
 	import Timer from 'tiny-timer';
 	import { browser } from '$app/environment';
 	import { onDestroy } from 'svelte';
-	import { showNotification, playSound, minutsAndSecondsToSecondsConverter } from '../../shared';
-	import { CountdownTime } from '../../entities';
+	import { showNotification, playSound, minutsAndSecondsToSecondsConverter } from '@coreShared';
+	import { CountdownTime } from '@coreEntities';
 
-	import { Button } from '../../shared';
+	import { Button } from '@coreShared';
 
 	import {
 		timers,
@@ -14,7 +14,7 @@
 		runningTimerId,
 		pomodoroPaused,
 		stopwatchState
-	} from '../../shared';
+	} from '@coreShared';
 
 	const timer = new Timer();
 

@@ -1,8 +1,8 @@
 <script>
-	import { TimePoint } from '../../entities';
-	import { SummaryTime } from '../../shared';
-	import { timers, draggingItem, pomodoroState } from '../../shared';
-	import { Timer } from '../../entities';
+	import { TimePoint } from '@coreEntities';
+	import { SummaryTime } from '@coreShared';
+	import { timers, draggingItem, pomodoroState } from '@coreShared';
+	import { Timer } from '@coreEntities';
 
 	let dragging = false,
 		draggingIndex,
@@ -29,7 +29,9 @@
 	{#if $timers.length > 0}
 		<div class="flex flex-col">
 			<div class=" flex items-end justify-between ">
-				<p class="text-2xl font-bold uppercase">{$pomodoroState ? 'Przebieg realizacji': 'Ustawienia Pomodoro'} </p>
+				<p class="text-2xl font-bold uppercase">
+					{$pomodoroState ? 'Przebieg realizacji' : 'Ustawienia Pomodoro'}
+				</p>
 
 				<SummaryTime />
 			</div>

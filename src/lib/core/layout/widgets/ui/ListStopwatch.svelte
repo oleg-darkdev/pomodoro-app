@@ -1,8 +1,8 @@
 <script>
 	import { slide } from 'svelte/transition';
-	import { SummaryTime } from '../../shared';
-	import { timers, laps } from '../../shared';
-	import { Lap } from '../../entities';
+	import { SummaryTime } from '@coreShared';
+	import { timers, laps } from '@coreShared';
+	import { Lap } from '@coreEntities';
 
 	$: timeMap = $timers?.map((index) => index.time);
 
@@ -41,8 +41,12 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="py-2 px-2 flex justify-center opacity-[0.7]">
-			<p class="py-4 px-2 rounded-xl border-2 border-pink-600 text-2xl font-black uppercase text-pink-500 text-center">Rozpocznij rejestrowanie zatrzymań</p>
+		<div class="flex justify-center py-2 px-2 opacity-[0.7]">
+			<p
+				class="rounded-xl border-2 border-pink-600 py-4 px-2 text-center text-2xl font-black uppercase text-pink-500"
+			>
+				Rozpocznij rejestrowanie zatrzymań
+			</p>
 		</div>
 	{/if}
 </div>

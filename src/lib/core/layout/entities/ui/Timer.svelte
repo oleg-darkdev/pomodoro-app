@@ -1,7 +1,7 @@
 <script>
 	import { fly } from 'svelte/transition';
-	import { timers, pomodoroState, runningTimerId, pomodoroPaused } from '../../shared/';
-	import { Button } from '../../shared/';
+	import { timers, pomodoroState, runningTimerId, pomodoroPaused } from '@coreShared';
+	import { Button } from '@coreShared';
 
 	export let id;
 	export let name;
@@ -161,10 +161,10 @@
 			<div class="flex flex-row flex-wrap">
 				<p
 					class="mr-2  {completed
-						? 'text-md text-gray-500 line-through completed'
+						? 'text-md completed text-gray-500 line-through'
 						: $runningTimerId === id
-						? 'text-pink-600 text-2xl font-bold'
-						: 'text-white text-2xl font-bold'}
+						? 'text-2xl font-bold text-pink-600'
+						: 'text-2xl font-bold text-white'}
             }"
 				>
 					{newTime}

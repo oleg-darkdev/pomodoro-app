@@ -7,5 +7,5 @@ let
 if (browser) {
 	hideHour = writable(JSON.parse(localStorage.getItem('hideHour')) || false);
 }
-
+// theme, currentView, hideHour
 export {  hideHour };
