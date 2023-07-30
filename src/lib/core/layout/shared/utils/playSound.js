@@ -1,6 +1,9 @@
+import { browser } from '$app/environment';
 function playSound(soundToPlay) {
-	const audio = new Audio(soundToPlay);
-	audio.play();
+	if (browser) {
+		const audio = new Audio(soundToPlay);
+		audio.play();
+	}
 
 	//   	const audio = new Audio('/sounds/timer-done.wav');
 	// 		audio.play();
