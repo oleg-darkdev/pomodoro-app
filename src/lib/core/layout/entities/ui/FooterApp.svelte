@@ -1,24 +1,28 @@
 <script>
-	import { NavBtnAppFooter } from '../../shared';
+	import {
+		stopwatchPaused,
+		stopwatchState,
+		pomodoroState,
+		pomodoroPaused,
+		NavBtnAppFooter
+	} from '@coreShared';
 
 	export let activeScreen;
 </script>
 
 <div class="btm-nav btm-nav-lg flex flex-row bg-pink-600 shadow-md shadow-pink-600">
-	<NavBtnAppFooter
-		on:click={() => (activeScreen = 'Settings')}
-		{activeScreen}
-		text={'Settings'}
-	>
+	<NavBtnAppFooter on:click={() => (activeScreen = 'Settings')} {activeScreen} text={'Settings'}>
 		<path
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			stroke-width="2"
 			d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
 		/>
-
 	</NavBtnAppFooter>
+
 	<NavBtnAppFooter
+		running={$pomodoroState}
+		paused={$pomodoroState && $pomodoroPaused}
 		on:click={() => (activeScreen = 'Pomodoro')}
 		{activeScreen}
 		text={'Pomodoro'}
@@ -30,7 +34,13 @@
 			d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 		/>
 	</NavBtnAppFooter>
-	<NavBtnAppFooter on:click={() => (activeScreen = 'Stopwatch')} {activeScreen} text={'Stopwatch'}>
+	<NavBtnAppFooter
+		on:click={() => (activeScreen = 'Stopwatch')}
+		{activeScreen}
+		text={'Stopwatch'}
+		running={$stopwatchState}
+		paused={$stopwatchState && $stopwatchPaused}
+	>
 		<path
 			stroke-linecap="round"
 			stroke-linejoin="round"
